@@ -18,10 +18,9 @@ upper_yellow = (180, 255, 255)
 if __name__ == "__main__":
     while True:        
         # lese Bild von Festplatte
-        image = cv2.imread("../_Data/4.jpg")
+        image = cv2.imread("../_Data/2.jpg")
         # konvertiere Frame in HSV-Farbraum, um besser nach Farb-Ranges filtern zu können
         image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-
         mask = cv2.inRange(image, lower_yellow, upper_yellow)
          
         # finde Konturen in der Maske, die nur noch zeigt, wo gelbe Pixel sind:
