@@ -11,6 +11,8 @@ import cv2
 lower_black = (0, 0, 40)
 upper_black = (180, 255, 255)
 
+threshold = 50
+
 
 if __name__ == "__main__":
     point = (150, 150)
@@ -21,20 +23,22 @@ if __name__ == "__main__":
         if ret == True: 
             #color = frame[150, 150]
             font = cv2.FONT_HERSHEY_SIMPLEX
-            cv2.putText(frame,'Classifier VdKI',(1,50), font, 2,(0,255,0),2,cv2.LINE_AA)
+            #cv2.putText(frame,'Classifier VdKI',(1,50), font, 2,(0,255,0),2,cv2.LINE_AA)
             #cv2.circle(frame,point,10,(0,255,0))   
             #cv2.putText(frame,str(color),(1,100), font, 0.5,(int(color[0]),int(color[1]),int(color[2])),2,cv2.LINE_AA)
             
             mask = cv2.inRange(frame, lower_black, upper_black)
            
+            im2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             
-            # finde Konturen in der Maske, die nur noch zeigt, wo gelbe Pixel sind:
-            _, contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL,
+            _, im2 = cv2.threshold(im2, threshold, 255, cv2.THRESH_BINARY)
+            
+                        # finde Konturen in der Maske, die nur noch zeigt, wo gelbe Pixel sind:
+            _, contours, _ = cv2.findContours(im2, cv2.RETR_EXTERNAL,
                                                   cv2.CHAIN_APPROX_SIMPLE)
             
-          
             
-            cv2.drawContours(frame, contours, -1, (0,255,0))
+            cv2.drawContours(im2, contours, -1, (0,255,0))
             cv2.imshow("im2", im2) #Zeigt die Maske als Bild.
 
 
