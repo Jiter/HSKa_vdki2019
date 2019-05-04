@@ -64,7 +64,7 @@ def detect(frame):
         #box = cv2.boxPoints(rect)
         #box = np.int0(box)
         #cv2.drawContours(frame,[box],0,(0,255,255),2)
-    return frame
+    return frame, edges
 
 
 if __name__ == "__main__":
@@ -86,11 +86,12 @@ if __name__ == "__main__":
             
         
         if ret == True: # Falls gültiges Bild gelesen
-            frame = detect(frame)
+            frame, edges  = detect(frame)
             
             cv2.imshow(str(fnames[cnt] + "orig"), frame)
             
             cv2.imwrite("C:/Users/David/Documents/GitHub/HSKa_vdki2019/_Data/Puit/{}.jpg".format(fnames[cnt][6:10]), frame);
+            cv2.imwrite("C:/Users/David/Documents/GitHub/HSKa_vdki2019/_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges);
             
             if cv2.waitKey(20) & 0xFF == ord("q"):
                 break
