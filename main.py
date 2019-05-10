@@ -63,11 +63,20 @@ def detect(frame):
            
             box = np.intp(box)
             
-            _, (w,h), _ = rect;
+            _, (a,b), _ = rect;
+            
+            if a > b:
+                h = b;
+                w = a;
+            else:
+                h = a;
+                w = b;
 
             cv2.drawContours(frame,[box],0,(0,0,255),2)
 
             cv2.putText(frame,"Width: {:f}, Height: {:f}".format(w, h),(1,100), font, 0.5,(int(155),int(155),int(155)),2,cv2.LINE_AA)
+            
+            print('{:f},{:f}'.format(w,h))
 
         else:    
             # zeichne die Bounding box des Tennisballs in das Video-Bild ein:
@@ -112,7 +121,9 @@ if __name__ == "__main__":
             cnt = cnt + 1
             if do_live == False and cnt >= len(fnames):
                 break
-
+            
+            if cnt > 10: 
+                break
             
             
         else: # Falls Bild ungültig, Kamera nicht bereit oÄ
