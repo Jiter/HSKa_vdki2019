@@ -83,19 +83,22 @@ def detect(frame):
                 
                 print('{:f},{:f}'.format(w,h))
     
-            else:    
-                # zeichne die Bounding box des Tennisballs in das Video-Bild ein:
+            else:
+                # Zeichne das BoundingRect des Objekts in das Video-Bild ein:
                 x, y, w, h = cv2.boundingRect(objekt)
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), thickness=3)
-                cv2.putText(frame,"Width: {}, Height: {}".format(w, h),(1,100), font, 0.5,(int(155),int(155),int(155)),2,cv2.LINE_AA)
-    
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255),
+                              thickness=3)
+                cv2.putText(frame, "Width: {}, Height: {}".format(w, h),
+                            (1, 100), font, 0.5, (int(155), int(155),
+                            int(155)), 2, cv2.LINE_AA)
+
     return frame, edges
 
 
 if __name__ == "__main__":
-    
+
     cnt = 0
-    
+
 #    for i in range(1,1499) :
 #        cap = cv2.VideoCapture(i)
 #        if (cap.isOpened()):
@@ -103,7 +106,7 @@ if __name__ == "__main__":
 #            break;
 
     if do_live:
-        cap = cv2.VideoCapture(1)  #  Initialisiere die Kamera
+        cap = cv2.VideoCapture(1)  # Initialisiere die Kamera
     else:
         fnames = glob.glob("_Data/*.jpg")
 
@@ -115,24 +118,23 @@ if __name__ == "__main__":
             ret = True
             print(fnames[cnt])
             frame = cv2.imread(fnames[cnt])
-    
 
-        if ret == True: # Falls gültiges Bild gelesen
-            frame, edges  = detect(frame)
-   
+        if ret:  # Falls gültiges Bild gelesen
+            frame, edges = detect(frame)
+
             cv2.imshow(str("orig"), frame)
 
-            #cv2.imwrite("C:/Users/David/Documents/GitHub/HSKa_vdki2019/_Data/Puit/{}.jpg", frame)
-            #cv2.imwrite("C:/Users/David/Documents/GitHub/HSKa_vdki2019/_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges)
-            
+#            cv2.imwrite("C:/Users/David/Documents/GitHub/HSKa_vdki2019/_Data/Puit/{}.jpg", frame)
+#           cv2.imwrite("C:/Users/David/Documents/GitHub/HSKa_vdki2019/_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges)
+
             if cv2.waitKey(20) & 0xFF == ord("q"):
                 break
 
             cnt = cnt + 1
-            if do_live == False and cnt >= len(fnames):
+            if (not do_live) and cnt >= len(fnames):
                 break
-            
-#           if cnt > 10: 
+
+#           if cnt > 10:
 #               break
 
         else:  # Falls Bild ungültig, Kamera nicht bereit oÄ
