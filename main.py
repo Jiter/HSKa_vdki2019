@@ -24,6 +24,8 @@ def detect(frame):
 
     # Nutze Canny Filter zum detektieren von Kanten
     edges = cv2.Canny(frame, 100, 255)
+    
+    cv2.imshow("Canny", edges)
 
     # finde Konturen
     _, contours, _ = cv2.findContours(edges, cv2.RETR_TREE,
@@ -47,7 +49,7 @@ def detect(frame):
         mask = edges
 
         cv2.drawContours(mask, hull_all, -1, (255, 255, 255), -1)
-        # cv2.imshow("Mask", mask)
+        #cv2.imshow("Mask", mask)
 
         b, g, r, _ = np.uint8(cv2.mean(frame, mask))
 
@@ -64,9 +66,7 @@ def detect(frame):
                      rng.randint(0, 256))
 
         print('{:d},{:d},{:d}'.format(b, g, r))
-            # cv2.drawContours(frame, hull_list, i, color)
-
-        cv2.imshow('Canny', edges)  # Zeigt die Maske als Bild.
+        cv2.drawContours(frame, hull_list, i, color)
 
         if len(contours) > 0:
             objekt = max(hull_all, key=cv2.contourArea)
@@ -94,15 +94,6 @@ def detect(frame):
                             2, cv2.LINE_AA)
 
                 print('{:f},{:f}'.format(w, h))
-                # Ermittle Durchschnittsfarbe in der Box
-                mask = np.zeros(hull.shape, np.uint8)  # Maske aus ConvexHull
-                b, g, r, _ = np.uint8(cv2.mean(frame, mask))
-                cv2.putText(frame,
-                            "Farbwert: blue: {:f},\
-                            green: {:f}, red: {:f}".format(b, g, r),
-                            (1, 200), font, 0.5,
-                            (int(155), int(155), int(155)),
-                            2, cv2.LINE_AA)
 
             else:
                 # Zeichne das BoundingRect des Objekts in das Video-Bild ein:
@@ -113,6 +104,8 @@ def detect(frame):
                             (10, 20), font, 0.5, (int(155), int(155),
                             int(155)), 2, cv2.LINE_AA)
 
+    cv2.imshow("Original", frame)
+    
     return frame, edges
 
 
@@ -169,6 +162,7 @@ def height2Class(h):
 
     return c
 
+
 # Calculate the Probability for all Classes on one Height-Class
 def calcProb(prob, klasse):
     return ((prob[klasse]) / 4) / ((prob[1] + prob[2] + prob[3] + prob[4]) / 4)
@@ -210,9 +204,8 @@ if __name__ == "__main__":
             frame = cv2.imread(fnames[cnt])
 
         if ret:  # Falls gültiges Bild gelesen
+            
             frame, edges = detect(frame)
-
-            cv2.imshow("Original", frame)
 
 #            cv2.imwrite("_Data/Puit/{}.jpg", frame)
 #            cv2.imwrite("_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), mask)
@@ -223,9 +216,9 @@ if __name__ == "__main__":
             if (not do_live) and cnt >= len(fnames):
                 break
 
-            cnt = cnt + 1
-            if cnt > 11:
-                break
+#            cnt = cnt + 1
+#            if cnt > 11:
+#                break
 
         else:  # Falls Bild ungültig, Kamera nicht bereit oÄ
             print("Could not retrieve any Picture... Sad...")
