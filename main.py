@@ -19,30 +19,32 @@ point = (150, 150)
 
 threshold = 70
 
-#do_live = False # Schalter zwischen LiveKamera und Übungsbildern
+# do_live = False # Schalter zwischen LiveKamera und Übungsbildern
 do_live = True
-  
 
-def detect(frame):    
+
+def detect(frame):
 
     font = cv2.FONT_HERSHEY_SIMPLEX
-        
 
-    frame = cv2.blur(frame,(3,3))
-    
+    frame = cv2.blur(frame, (3, 3))
+
     # Nutze Canny Filter zum detektieren von Kanten
     edges = cv2.Canny(frame, 100, 255)
 
-    # finde viele kleine Konturen
-    _, contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    
+    # finde Konturen
+    _, contours, _ = cv2.findContours(edges, cv2.RETR_TREE,
+                                      cv2.CHAIN_APPROX_SIMPLE)
     hull_list = []
     for i in range(len(contours)):
         hull = cv2.convexHull(contours[i]) #konvexe Hülle aller Konturen
         hull_list.append(hull)
+
+    # if ():    
+    cont = np.vstack(contours[i] for i in range(len(contours)))
+    hull_all = []
     
-#    print("contours:{}".format(contours))    
-    
+    # print("contours:{}".format(contours))    
     if (not contours==[]):
         cont = np.vstack(contours[i] for i in range(len(contours)))
         hull_all = []
