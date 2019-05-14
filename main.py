@@ -88,8 +88,17 @@ def detect(frame):
                             2, cv2.LINE_AA)
 
                 print('{:f},{:f}'.format(w, h))
+                # Ermittle Durchschnittsfarbe in der Box
+                mask = np.zeros(hull.shape, np.uint8)  # Maske aus ConvexHull
+                b, g, r, _ = np.uint8(cv2.mean(frame, mask))
+                cv2.putText(frame,
+                            "Farbwert: blue: {:f},\
+                            green: {:f}, red: {:f}".format(b, g, r),
+                            (1, 200), font, 0.5,
+                            (int(155), int(155), int(155)),
+                            2, cv2.LINE_AA)
 
-            else:    
+            else:
                 # Zeichne das BoundingRect des Objekts in das Video-Bild ein:
                 x, y, w, h = cv2.boundingRect(objekt)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255),
@@ -97,6 +106,7 @@ def detect(frame):
                 cv2.putText(frame, "Width: {}, Height: {}".format(w, h),
                             (1, 100), font, 0.5, (int(155), int(155),
                             int(155)), 2, cv2.LINE_AA)
+
 
     return frame, edges
 
