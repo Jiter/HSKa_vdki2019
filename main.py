@@ -133,7 +133,7 @@ if __name__ == "__main__":
             
             
         else: # Falls Bild ungültig, Kamera nicht bereit oÄ
-            print("shit")
+            print("Could not retrieve any Picture... Sad...")
             break
         
     cap.release()
