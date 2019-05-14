@@ -46,7 +46,7 @@ def detect(frame):
         mask = edges
         
         cv2.drawContours(mask, hull_all, -1, (255, 255, 255), -1)
-        cv2.imshow("Mask", mask)
+        # cv2.imshow("Mask", mask)
         
         b, g, r, _ = np.uint8(cv2.mean(frame, mask))
         
@@ -62,6 +62,7 @@ def detect(frame):
                      rng.randint(0, 256),
                      rng.randint(0, 256))
 
+        print('{:d},{:d},{:d}'.format(b, g, r))
             #cv2.drawContours(frame, hull_list, i, color)
 
         cv2.imshow('Canny', edges)  # Zeigt die Maske als Bild.
@@ -154,12 +155,12 @@ if __name__ == "__main__":
             if (cv2.waitKey(20) & 0xFF) == ord("q"):
                 break
 
-            cnt = cnt + 1
             if (not do_live) and cnt >= len(fnames):
                 break
-
-#           if cnt > 10:
-#               break
+            
+            cnt = cnt + 1
+            if cnt > 11:
+                break
 
         else:  # Falls Bild ungültig, Kamera nicht bereit oÄ
             print("Could not retrieve any Picture... Sad...")
