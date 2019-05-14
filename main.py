@@ -133,8 +133,7 @@ if __name__ == "__main__":
 #            cv2.imwrite("C:/Users/David/Documents/GitHub/HSKa_vdki2019/_Data/Puit/{}.jpg", frame)
 #            cv2.imwrite("C:/Users/David/Documents/GitHub/HSKa_vdki2019/_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges)
 
-
-            if cv2.waitKey(20) & 0xFF == ord("q"):
+            if (cv2.waitKey(20) & 0xFF) == ord("q"):
                 break
 
             cnt = cnt + 1
