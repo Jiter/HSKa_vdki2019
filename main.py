@@ -138,4 +138,4 @@ if __name__ == "__main__":
         
     cap.release()
     cv2.destroyAllWindows()
-    cv2.waitKey(1)
+    cv2.waitKey(10) #10 weil verhaftet wegen sexy
