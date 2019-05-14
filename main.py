@@ -40,7 +40,8 @@ def detect(frame):
     for i in range(len(contours)):
         hull = cv2.convexHull(contours[i])
         hull_list.append(hull)
-        
+    
+    #if ():    
     cont = np.vstack(contours[i] for i in range(len(contours)))
     hull_all = []
     
@@ -91,7 +92,12 @@ if __name__ == "__main__":
     
     cnt = 0
     
-    
+#    for i in range(1,1499) :
+#        cap = cv2.VideoCapture(i)
+#        if (cap.isOpened()):
+#            print("Found camera {}\n".format(i))
+#            break;
+            
     if do_live:
         cap = cv2.VideoCapture(1); #Initialisiere die Kamera
     else:
@@ -129,3 +135,7 @@ if __name__ == "__main__":
         else: # Falls Bild ungültig, Kamera nicht bereit oÄ
             print("shit")
             break
+        
+    cap.release()
+    cv2.destroyAllWindows()
+    cv2.waitKey(1)
