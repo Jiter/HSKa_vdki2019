@@ -99,45 +99,45 @@ if __name__ == "__main__":
 #        if (cap.isOpened()):
 #            print("Found camera {}\n".format(i))
 #            break;
-            
+
     if do_live:
-        cap = cv2.VideoCapture(1); #Initialisiere die Kamera
+        cap = cv2.VideoCapture(1);  # Initialisiere die Kamera
     else:
         fnames = glob.glob("_Data/*.jpg")
-    
-    while True: #Schleife 
-        
+
+    while True:  # Schleife 
+
         if do_live:
             ret, frame = cap.read()
         else:
             ret = True
             print(fnames[cnt])
             frame = cv2.imread(fnames[cnt])
-            
-        
+    
+
         if ret == True: # Falls gültiges Bild gelesen
             frame, edges  = detect(frame)
-            
+   
             cv2.imshow(str("orig"), frame)
-            
+
             #cv2.imwrite("C:/Users/David/Documents/GitHub/HSKa_vdki2019/_Data/Puit/{}.jpg", frame);
             #cv2.imwrite("C:/Users/David/Documents/GitHub/HSKa_vdki2019/_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges);
             
             if cv2.waitKey(20) & 0xFF == ord("q"):
                 break
-            
+
             cnt = cnt + 1
             if do_live == False and cnt >= len(fnames):
                 break
             
-           # if cnt > 10: 
-            #    break
-            
-            
-        else: # Falls Bild ungültig, Kamera nicht bereit oÄ
+#           if cnt > 10: 
+#               break
+        
+        
+        else:  # Falls Bild ungültig, Kamera nicht bereit oÄ
             print("Could not retrieve any Picture... Sad...")
             break
-        
+    
     cap.release()
     cv2.destroyAllWindows()
-    cv2.waitKey(10) #10 weil verhaftet wegen sexy
+    cv2.waitKey(10)  #10 weil verhaftet wegen sexy
