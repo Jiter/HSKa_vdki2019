@@ -60,7 +60,7 @@ def detect(frame):
 
             cv2.drawContours(frame, hull_list, i, color)
 
-        cv2.imshow('file', edges)  # Zeigt die Maske als Bild.
+        cv2.imshow('Canny', edges)  # Zeigt die Maske als Bild.
 
         if len(contours) > 0:
             objekt = max(hull_all, key=cv2.contourArea)
@@ -83,22 +83,33 @@ def detect(frame):
                 cv2.drawContours(frame, [box], 0, (0, 0, 255), 2)
 
                 cv2.putText(frame, "Width: {:f}, Height: {:f}".format(w, h),
-                            (1, 100), font, 0.5,
+                            (10, 20), font, 0.5,
                             (int(155), int(155), int(155)),
                             2, cv2.LINE_AA)
 
-                print('{:f},{:f}'.format(w, h))
+                # print('{:f},{:f}'.format(w, h))
 
-            else:    
+            else:
                 # Zeichne das BoundingRect des Objekts in das Video-Bild ein:
                 x, y, w, h = cv2.boundingRect(objekt)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255),
                               thickness=3)
-                cv2.putText(frame, "Width: {}, Height: {}".format(w, h),
-                            (1, 100), font, 0.5, (int(155), int(155),
+                cv2.putText(frame, "Width: {}, \n Height: {}".format(w, h),
+                            (10, 20), font, 0.5, (int(155), int(155),
                             int(155)), 2, cv2.LINE_AA)
 
     return frame, edges
+
+
+def makeWindows():
+    cv2.namedWindow("Canny", cv2.WINDOW_NORMAL)
+    cv2.waitKey(10)
+    cv2.moveWindow("Canny", 500, 0)
+    cv2.waitKey(10)
+    cv2.namedWindow("Original", cv2.WINDOW_NORMAL)
+    cv2.waitKey(10)
+    cv2.moveWindow("Original", 0, 0)
+    cv2.waitKey(10)
 
 
 if __name__ == "__main__":
@@ -110,9 +121,11 @@ if __name__ == "__main__":
 #        if (cap.isOpened()):
 #            print("Found camera {}\n".format(i))
 #            break;
+ 
+    makeWindows()
 
     if do_live:
-        cap = cv2.VideoCapture(1)  # Initialisiere die Kamera
+        cap = cv2.VideoCapture(0)  # Initialisiere die Kamera
     else:
         fnames = glob.glob("_Data/*.jpg")
 
@@ -128,7 +141,7 @@ if __name__ == "__main__":
         if ret:  # Falls gültiges Bild gelesen
             frame, edges = detect(frame)
 
-            cv2.imshow(str("orig"), frame)
+            cv2.imshow("Original", frame)
 
 #            cv2.imwrite("C:/Users/David/Documents/GitHub/HSKa_vdki2019/_Data/Puit/{}.jpg", frame)
 #            cv2.imwrite("C:/Users/David/Documents/GitHub/HSKa_vdki2019/_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges)
@@ -147,6 +160,8 @@ if __name__ == "__main__":
             print("Could not retrieve any Picture... Sad...")
             break
 
+    # Release Handle on CAP and destroy all Windows
     cap.release()
     cv2.destroyAllWindows()
-    cv2.waitKey(10)  # 10 weil verhaftet wegen sexy
+    cv2.waitKey(10)
+    print("TEST")
