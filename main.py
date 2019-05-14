@@ -33,58 +33,60 @@ def detect(frame):
     # Nutze Canny Filter zum detektieren von Kanten
     edges = cv2.Canny(frame, 100, 255)
 
-    # finde Konturen
+    # finde viele kleine Konturen
     _, contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     
     hull_list = []
     for i in range(len(contours)):
-        hull = cv2.convexHull(contours[i])
+        hull = cv2.convexHull(contours[i]) #konvexe Hülle aller Konturen
         hull_list.append(hull)
     
-    #if ():    
-    cont = np.vstack(contours[i] for i in range(len(contours)))
-    hull_all = []
+#    print("contours:{}".format(contours))    
     
-    hull_all.append(cv2.convexHull(cont))
+    if (not contours==[]):
+        cont = np.vstack(contours[i] for i in range(len(contours)))
+        hull_all = []
+        
+        hull_all.append(cv2.convexHull(cont))
+        
+        # Draw contours + hull results
+        #frame = np.zeros((edges.shape[0], edges.shape[1], 3), dtype=np.uint8)
+        for i in range(len(contours)):
+            color = (rng.randint(0,256), rng.randint(0,256), rng.randint(0,256))
+            cv2.drawContours(frame, hull_list, i, color)
+                
+        cv2.imshow('file', edges) #Zeigt die Maske als Bild.
     
-    # Draw contours + hull results
-    #frame = np.zeros((edges.shape[0], edges.shape[1], 3), dtype=np.uint8)
-    for i in range(len(contours)):
-        color = (rng.randint(0,256), rng.randint(0,256), rng.randint(0,256))
-        cv2.drawContours(frame, hull_list, i, color)
-            
-    cv2.imshow('file', edges) #Zeigt die Maske als Bild.
-
-    if len(contours) > 0:
-        objekt = max(hull_all, key=cv2.contourArea)
- 
-        if use_tilted_rect:
-            rect = cv2.minAreaRect(objekt)
-            box = cv2.boxPoints(rect)
-           
-            box = np.intp(box)
-            
-            _, (a,b), _ = rect;
-            
-            if a > b:
-                h = b;
-                w = a;
-            else:
-                h = a;
-                w = b;
-
-            cv2.drawContours(frame,[box],0,(0,0,255),2)
-
-            cv2.putText(frame,"Width: {:f}, Height: {:f}".format(w, h),(1,100), font, 0.5,(int(155),int(155),int(155)),2,cv2.LINE_AA)
-            
-            print('{:f},{:f}'.format(w,h))
-
-        else:    
-            # zeichne die Bounding box des Tennisballs in das Video-Bild ein:
-            x, y, w, h = cv2.boundingRect(objekt)
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), thickness=3)
-            cv2.putText(frame,"Width: {}, Height: {}".format(w, h),(1,100), font, 0.5,(int(155),int(155),int(155)),2,cv2.LINE_AA)
-
+        if len(contours) > 0:
+            objekt = max(hull_all, key=cv2.contourArea)
+     
+            if use_tilted_rect:
+                rect = cv2.minAreaRect(objekt)
+                box = cv2.boxPoints(rect)
+               
+                box = np.intp(box)
+                
+                _, (a,b), _ = rect;
+                
+                if a > b:
+                    h = b;
+                    w = a;
+                else:
+                    h = a;
+                    w = b;
+    
+                cv2.drawContours(frame,[box],0,(0,0,255),2)
+    
+                cv2.putText(frame,"Width: {:f}, Height: {:f}".format(w, h),(1,100), font, 0.5,(int(155),int(155),int(155)),2,cv2.LINE_AA)
+                
+                print('{:f},{:f}'.format(w,h))
+    
+            else:    
+                # zeichne die Bounding box des Tennisballs in das Video-Bild ein:
+                x, y, w, h = cv2.boundingRect(objekt)
+                cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), thickness=3)
+                cv2.putText(frame,"Width: {}, Height: {}".format(w, h),(1,100), font, 0.5,(int(155),int(155),int(155)),2,cv2.LINE_AA)
+    
     return frame, edges
 
 
@@ -128,8 +130,8 @@ if __name__ == "__main__":
             if do_live == False and cnt >= len(fnames):
                 break
             
-            if cnt > 10: 
-                break
+           # if cnt > 10: 
+            #    break
             
             
         else: # Falls Bild ungültig, Kamera nicht bereit oÄ
