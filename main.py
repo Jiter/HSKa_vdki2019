@@ -267,7 +267,9 @@ if __name__ == "__main__":
             break
 
     # Release Handle on CAP and destroy all Windows
-    cap.release()
+    if do_live:
+        cap.release()
+    
     cv2.destroyAllWindows()
     cv2.waitKey(10)
     print("Bye Bye")
