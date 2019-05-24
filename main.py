@@ -199,13 +199,15 @@ def rmseClassifier(feat):
     yH = [269.751, 215.735, 126.42]  # Hasen
     yS = [339.887, 237.996, 149.33]  # Schafe
     yP = [318.529, 239.186, 111.40]  # Schmetterlinge
-    cl = ["Küken", "Hase", "Schaf", "Schmetterling"]
+    cl = ["Kueken", "Hase", "Schaf", "Schmetterling"]
 
     n = len(yK)  # Anzahl Merkmale
 
     w = feat[0]
     h = feat[1]
     c = sum(map(float, filter(None, feat[2][1:])))/(len(feat[2])-1)
+    
+    print(c)
 
     rmse.append(math.sqrt((1 / n) * (pow((yK[0] - w), 2) + pow((yK[1] - h), 2) + pow((yK[2] - c), 2))))
     rmse.append(math.sqrt((1 / n) * (pow((yH[0] - w), 2) + pow((yH[1] - h), 2) + pow((yH[2] - c), 2))))
@@ -244,9 +246,16 @@ if __name__ == "__main__":
             frame, edges, feat = detect(frame)
 
             rmseklasse = rmseClassifier(feat)
+            
+            bayesklasse = "unknown"
 
             cv2.putText(frame, "RMSE: {}".format(rmseklasse),
                         (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                        (int(155), int(155), int(155)),
+                        2, cv2.LINE_AA)
+            
+            cv2.putText(frame, "Bayes: {}".format(bayesklasse),
+                        (10, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                         (int(155), int(155), int(155)),
                         2, cv2.LINE_AA)
 
