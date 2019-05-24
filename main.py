@@ -126,19 +126,35 @@ def makeWindows():
     cv2.waitKey(10)
 
 
-def loadProbabilityArrays(h):
+def loadProbabilityArrays(w, h, b, g, r,):
     prob = []
+
+    # WIDTH
     #       Klasse, Schmetterling, Hase, Schaf, Küken
-    prob = np.array([
+    prob.append(np.array([
+            [0,     0,      0.591,  0,      0],      # 210 - 215
+            [1,     0,      0.159,  0,      0.026],  # 215 - 220
+            [2,     0,      0.159,  0,      0.299],  # 220 - 225
+            [3,     0.240,  0,      0.106,  0.597],  # 225 - 230
+            [4,     0.2,    0,      0.227,  0.078],  # 230 - 235
+            [5,     0.053,  0,      0.197,  0],      # 235 - 240
+            [6,     0,      0,      0.469,  0],      # 240 - 245
+            [7,     0.253,  0,      0,      0],      # 245 - 250
+            [8,     0.16,   0,      0,      0],      # 250 - 255
+            ]))
+
+    # HEIGHT
+    #       Klasse, Schmetterling, Hase, Schaf, Küken
+    prob.append(np.array([
             [0,     0,      0.16,   0,      0],      # 290 - 295
             [1,     0,      0.595,  0,      0],      # 295 - 300
-            [2,     0.093,  0.238,  0,      0],      # 300 - 305
-            [3,     0.240,  0,      0,      0],      # 305 - 310
-            [4,     0.2,    0,      0,      0],      # 310 - 315
-            [5,     0.053,  0,      0,      0],      # 315 - 320
+            [2,     0.091,  0.238,  0,      0],      # 300 - 305
+            [3,     0.233,  0,      0,      0],      # 305 - 310
+            [4,     0.195,  0,      0,      0],      # 310 - 315
+            [5,     0.078,  0,      0,      0],      # 315 - 320
             [6,     0,      0,      0,      0],      # 320 - 325
-            [7,     0.253,  0,      0,      0],      # 325 - 330
-            [8,     0.16,   0,      0.079,  0],      # 330 - 335
+            [7,     0.247,  0,      0,      0],      # 325 - 330
+            [8,     0.156,  0,      0.079,  0],      # 330 - 335
             [9,     0,      0,      0.571,  0],      # 335 - 340
             [10,    0,      0,      0.19,   0],      # 340 - 345
             [11,    0,      0,      0.158,  0],      # 345 - 350
@@ -153,9 +169,94 @@ def loadProbabilityArrays(h):
             [20,    0,      0,      0,      0.243],  # 390 - 395
             [21,    0,      0,      0,      0.365],  # 395 - 400
             [22,    0,      0,      0,      0.040],  # 400 - 405
-            ])
+            ]))
 
-    return prob[height2Class(h), :]
+    # BLAU
+    #       Klasse, Schmetterling, Hase, Schaf, Küken
+    prob.append(np.array([
+            [0,     0,      0,      0,      0.013],      # 75  - 79
+            [1,     0,      0,      0,      0.065],      # 80  - 84
+            [2,     0.078,  0,      0,      0.104],      # 85  - 89
+            [3,     0.208,  0,      0,      0.143],      # 90  - 94
+            [4,     0.312,  0,      0,      0.104],      # 95  - 99
+            [5,     0.065,  0,      0,      0.039],      # 100 - 104
+            [6,     0.117,  0.045,  0,      0.117],      # 105 - 109
+            [7,     0.091,  0.159,  0,      0.130],      # 110 - 114
+            [8,     0,      0.318,  0,      0.195],      # 115 - 119
+            [9,     0.026,  0.386,  0,      0.078],      # 120 - 124
+            [10,    0.065,  0.091,  0,      0.013],      # 125 - 129
+            [11,    0.039,  0,      0,      0],          # 130 - 134
+            [12,    0,      0,      0.288,  0],          # 135 - 139
+            [13,    0,      0,      0.379,  0],          # 140 - 144
+            [14,    0,      0,      0.166,  0],          # 145 - 149
+            [15,    0,      0,      0.166,  0],          # 150 - 154
+            ]))
+
+    # GRÜN
+    #       Klasse, Schmetterling, Hase, Schaf, Küken
+    prob.append(np.array([
+            [0,     0,      0,      0,      0],      # 75  - 79
+            [1,     0.208,  0,      0,      0],      # 80  - 84
+            [2,     0.078,  0,      0,      0],      # 85  - 89
+            [3,     0.286,  0,      0,      0],      # 90  - 94
+            [4,     0.065,  0,      0,      0],      # 95  - 99
+            [5,     0,      0,      0,      0],      # 100 - 104
+            [6,     0,      0,      0,      0],      # 105 - 109
+            [7,     0.065,  0,      0,      0.273],  # 110 - 114
+            [8,     0.078,   0,      0,      0.156],  # 115 - 119
+            [9,     0.117,  0.182,  0,      0.026],  # 120 - 124
+            [10,    0.026,  0.818,  0,      0.182],  # 125 - 129
+            [11,    0,      0,      0,      0.234],  # 130 - 134
+            [12,    0,      0,      0,      0.130],  # 135 - 139
+            [13,    0,      0,      0,      0],      # 140 - 144
+            [14,    0,      0,      0.333,  0],      # 145 - 149
+            [15,    0,      0,      0.257,  0],      # 150 - 154
+            [16,    0,      0,      0.318,  0],      # 155 - 159
+            [17,    0,      0,      0.091,  0],      # 160 - 164
+            [18,    0.143,  0,      0,      0],      # 165 - 169
+            ]))
+
+    # RED
+    #       Klasse, Schmetterling, Hase, Schaf, Küken
+    prob.append(np.array([
+            [0,     0,      0,      0,      0],      # 75  - 79
+            [1,     0,      0,      0,      0],      # 80  - 84
+            [2,     0,      0,      0,      0],      # 85  - 89
+            [3,     0,      0,      0,      0],      # 90  - 94
+            [4,     0,      0,      0,      0.013],  # 95  - 99
+            [5,     0,      0,      0,      0.078],  # 100 - 104
+            [6,     0,      0,      0,      0.182],  # 105 - 109
+            [7,     0.091,  0,      0,      0.195],  # 110 - 114
+            [8,     0.052,  0,      0,      0.078],  # 115 - 119
+            [9,     0.506,  0.182,  0,      0.130],  # 120 - 124
+            [10,    0.156,  0.818,  0,      0.221],  # 125 - 129
+            [11,    0.052,  0.523,  0,      0.104],  # 130 - 134
+            [12,    0.143,  0.477,  0.030,  0],      # 135 - 139
+            [13,    0,      0,      0.136,   0],      # 140 - 144
+            [14,    0,      0,      0.166,  0],      # 145 - 149
+            [15,    0,      0,      0.257,  0],      # 150 - 154
+            [16,    0,      0,      0.409,  0],      # 155 - 159
+            ]))
+
+    ret = []
+
+    ret.append(prob[0][width2Class(w), :])
+    ret.append(prob[1][height2Class(h), :])
+    ret.append(prob[2][blue2Class(b), :])
+    ret.append(prob[3][green2Class(g), :])
+    ret.append(prob[4][red2Class(r), :])
+
+    return ret
+
+
+# Function to calculate the given Class from the Width
+def width2Class(w):
+    c = math.floor(((w - 210) / 5))
+    if c > 8:
+        c = 8
+    elif c < 0:
+        c = 0
+    return c
 
 
 # Function to calculate the given Class from the Height
@@ -165,7 +266,36 @@ def height2Class(h):
         c = 22
     elif c < 0:
         c = 0
+    return c
 
+
+# Function to calculate the given Class from the Blue
+def blue2Class(b):
+    c = math.floor(((b - 75) / 5))
+    if c > 15:
+        c = 15
+    elif c < 0:
+        c = 0
+    return c
+
+
+# Function to calculate the given Class from the Green
+def green2Class(g):
+    c = math.floor(((g - 75) / 5))
+    if c > 18:
+        c = 18
+    elif c < 0:
+        c = 0
+    return c
+
+
+# Function to calculate the given Class from the Red
+def red2Class(r):
+    c = math.floor(((r - 75) / 5))
+    if c > 18:
+        c = 18
+    elif c < 0:
+        c = 0
     return c
 
 
@@ -182,8 +312,9 @@ def probabilityMatrix(classprob):
     return v
 
 
-def thisIsWhereTheMagicHappens(h):
-    classprob = loadProbabilityArrays(h)
+# No Really... This is really where the magic happens
+def thisIsWhereTheMagicHappens(h, w, b, g, r):
+    classprob = loadProbabilityArrays(h, w, b, g, r)
     heightprob = probabilityMatrix(classprob)
 
     print(heightprob)
@@ -243,6 +374,7 @@ if __name__ == "__main__":
             frame = cv2.imread(fnames[cnt])
 
         if ret:  # Falls gültiges Bild gelesen
+
             frame, edges, feat = detect(frame)
 
             rmseklasse = rmseClassifier(feat)
@@ -258,6 +390,7 @@ if __name__ == "__main__":
                         (10, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                         (int(155), int(155), int(155)),
                         2, cv2.LINE_AA)
+
 
             cv2.imwrite("_Data/Puit/{}.jpg".format(fnames[cnt][6:10]), frame)
 #            cv2.imwrite("_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges)
