@@ -303,19 +303,24 @@ def red2Class(r):
 
 
 # Calculate the Probability for all Classes on one Height-Class
-def calcProb(prob, klasse):
+def calcProb(prob):
     ret = []
+    print("THIS")
+    print(prob)
     for i in range(4):
+        print(i)
         print(((prob[i+1]) / (prob[1] + prob[2] + prob[3] + prob[4])))
         ret.append((prob[i+1]) / (prob[1] + prob[2] + prob[3] + prob[4]))
-        return ret
+    
+    return ret
 
 # Give Back an Vector with probabilitys of each Teached Class
 def probabilityMatrix(classprob):
     ret = []
     for i in range(len(classprob)):
-        ret.append(calcProb(classprob[i],i))
-
+        ret.append(calcProb(classprob[i]))
+        
+    print(ret)
     return ret
 
 
@@ -337,10 +342,19 @@ def thisIsWhereTheMagicHappens(feat):
     prob = probabilityMatrix(classprob)
       
     summe = []
-  
-    for i in range(len(prob)):
-        summe.append(sum(prob[i]))
     
+    for i in range(len(prob[1])):
+        s=0
+        print("i")
+        for j in range(len(prob)):
+            s = prob[j][i] + s
+            print("j")
+            print(s)
+        summe.append(s)
+        
+    print(summe)
+        
+
     print("Class")
     print(classprob)
     print("PROB")
@@ -388,7 +402,7 @@ if __name__ == "__main__":
     makeWindows()
 
     if do_live:
-        cap = cv2.VideoCapture(1)  # Initialisiere die Kamera
+        cap = cv2.VideoCapture(0)  # Initialisiere die Kamera
     else:
         fnames = glob.glob("_Data/*.jpg")
 
