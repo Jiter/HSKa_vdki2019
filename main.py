@@ -9,6 +9,7 @@ import cv2
 import random as rng
 import glob
 import math
+import pdb
 
 use_tilted_rect = True
 
@@ -303,16 +304,19 @@ def red2Class(r):
 
 # Calculate the Probability for all Classes on one Height-Class
 def calcProb(prob, klasse):
-    print(((prob[klasse]) / (prob[1] + prob[2] + prob[3] + prob[4])))
-    return ((((prob[klasse]) / (prob[1] + prob[2] + prob[3] + prob[4]))))
-
+    ret = []
+    for i in range(4):
+        print(((prob[i+1]) / (prob[1] + prob[2] + prob[3] + prob[4])))
+        ret.append((prob[i+1]) / (prob[1] + prob[2] + prob[3] + prob[4]))
+        return ret
 
 # Give Back an Vector with probabilitys of each Teached Class
 def probabilityMatrix(classprob):
-    v = []
-    for i in range(len(classprob)-1):
-        v.append(calcProb(classprob, i))
-    return v
+    ret = []
+    for i in range(len(classprob)):
+        ret.append(calcProb(classprob[i],i))
+
+    return ret
 
 
 # No Really... This is really where the magic happens
@@ -327,7 +331,7 @@ def thisIsWhereTheMagicHappens(feat):
     r = feat[2][2]
     cl = ["Kueken", "Hase", "Schaf", "Schmetterling"]
     
-    print("SVENN: {},{},{},{},{}".format(w,h,b,g,r))
+    print("SVENN: {},{},{},{},{}".format(w, h, b, g, r))
     
     classprob = loadProbabilityArrays(h, w, b, g, r)
     prob = probabilityMatrix(classprob)
@@ -344,7 +348,7 @@ def thisIsWhereTheMagicHappens(feat):
     print("SUMME")
     print(summe)
     
-    klasse = cl[summe.index(max(summe))]
+#    klasse = cl[summe.index(max(summe))]
     
     return klasse
 
@@ -384,7 +388,7 @@ if __name__ == "__main__":
     makeWindows()
 
     if do_live:
-        cap = cv2.VideoCapture(0)  # Initialisiere die Kamera
+        cap = cv2.VideoCapture(1)  # Initialisiere die Kamera
     else:
         fnames = glob.glob("_Data/*.jpg")
 
