@@ -126,13 +126,13 @@ def loadProbabilityArrays(h):
     prob = np.array([
             [0,     0,      0.16,   0,      0],      # 290 - 295
             [1,     0,      0.595,  0,      0],      # 295 - 300
-            [2,     0.093,  0.238,  0,      0],      # 300 - 305
-            [3,     0.240,  0,      0,      0],      # 305 - 310
-            [4,     0.2,    0,      0,      0],      # 310 - 315
-            [5,     0.053,  0,      0,      0],      # 315 - 320
+            [2,     0.091,  0.238,  0,      0],      # 300 - 305
+            [3,     0.233,  0,      0,      0],      # 305 - 310
+            [4,     0.195,  0,      0,      0],      # 310 - 315
+            [5,     0.078,  0,      0,      0],      # 315 - 320
             [6,     0,      0,      0,      0],      # 320 - 325
-            [7,     0.253,  0,      0,      0],      # 325 - 330
-            [8,     0.16,   0,      0.079,  0],      # 330 - 335
+            [7,     0.247,  0,      0,      0],      # 325 - 330
+            [8,     0.156,  0,      0.079,  0],      # 330 - 335
             [9,     0,      0,      0.571,  0],      # 335 - 340
             [10,    0,      0,      0.19,   0],      # 340 - 345
             [11,    0,      0,      0.158,  0],      # 345 - 350
@@ -181,6 +181,241 @@ def thisIsWhereTheMagicHappens(h):
     heightprob = probabilityMatrix(classprob)
 
     print(heightprob)
+
+#Anfang#######################################################################
+  
+    
+def loadProbabilityArrays(w):
+    prob = []
+    #       Klasse, Schmetterling, Hase, Schaf, Küken
+    prob = np.array([
+            [0,     0,      0.591,  0,      0],      # 210 - 215
+            [1,     0,      0.159,  0,      0.026],  # 215 - 220
+            [2,     0,      0.159,  0,      0.299],  # 220 - 225
+            [3,     0.240,  0,      0.106,  0.597],  # 225 - 230
+            [4,     0.2,    0,      0.227,  0.078],  # 230 - 235
+            [5,     0.053,  0,      0.197,  0],      # 235 - 240
+            [6,     0,      0,      0.469,  0],      # 240 - 245
+            [7,     0.253,  0,      0,      0],      # 245 - 250
+            [8,     0.16,   0,      0,      0],      # 250 - 255
+            ])
+
+    return prob[wide2Class(w), :]
+
+
+# Function to calculate the given Class from the Height
+def wide2Class(w):
+    c = math.floor(((w - 290) / 5))
+    if c > 8:
+        c = 8
+    elif c < 0:
+        c = 0
+
+    return c
+
+
+# Calculate the Probability for all Classes on one Height-Class
+def calcProb(prob, klasse):
+    return ((prob[klasse]) / 4) / ((prob[1] + prob[2] + prob[3] + prob[4]) / 4)
+
+
+# Give Back an Vector with probabilitys of each Teached Class
+def probabilityMatrix(classprob):
+    v = []
+    for i in range(4):
+        v.append(calcProb(classprob, i + 1))
+    return v
+
+
+def thisIsWhereTheMagicHappens(w):
+    classprob = loadProbabilityArrays(w)
+    wideprob = probabilityMatrix(classprob)
+
+    print(wideprob)
+
+    
+    
+    
+    
+ # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #    
+    
+def loadProbabilityArrays(x):
+    prob = []
+    #       Klasse, Schmetterling, Hase, Schaf, Küken
+    prob = np.array([
+            [0,     0,      0,      0,      0.013],      # 75  - 79
+            [1,     0,      0,      0,      0.065],      # 80  - 84
+            [2,     0.078,  0,      0,      0.104],      # 85  - 89
+            [3,     0.208,  0,      0,      0.143],      # 90  - 94
+            [4,     0.312,  0,      0,      0.104],      # 95  - 99
+            [5,     0.065,  0,      0,      0.039],      # 100 - 104
+            [6,     0.117,  0.045,  0,      0.117],      # 105 - 109
+            [7,     0.091,  0.159,  0,      0.130],      # 110 - 114
+            [8,     0,      0.318,  0,      0.195],      # 115 - 119
+            [9,     0.026,  0.386,  0,      0.078],      # 120 - 124
+            [10,    0.065,  0.091,  0,      0.013],      # 125 - 129
+            [11,    0.039,  0,      0,      0],          # 130 - 134
+            [12,    0,      0,      0.288,  0],          # 135 - 139
+            [13,    0,      0,      0.379,  0],          # 140 - 144
+            [14,    0,      0,      0.166,  0],          # 145 - 149
+            [15,    0,      0,      0.166,  0],          # 150 - 154
+
+    return prob[farbex2Class(x), :]
+
+
+# Function to calculate the given Class from the Height
+def farbex2Class(x):
+    c = math.floor(((x - 75) / 5))
+    if c > 15:
+        c = 15
+    elif c < 0:
+        c = 0
+
+    return c
+
+
+# Calculate the Probability for all Classes on one Height-Class
+def calcProb(prob, klasse):
+    return ((prob[klasse]) / 4) / ((prob[1] + prob[2] + prob[3] + prob[4]) / 4)
+
+
+# Give Back an Vector with probabilitys of each Teached Class
+def probabilityMatrix(classprob):
+    v = []
+    for i in range(4):
+        v.append(calcProb(classprob, i + 1))
+    return v
+
+
+def thisIsWhereTheMagicHappens(x):
+    classprob = loadProbabilityArrays(x)
+    farbexprob = probabilityMatrix(classprob)
+
+    print(farbexprob)
+
+#   #   #   #   #   #   #  #    #   #   #   #   #   #   #   #   #
+    
+def loadProbabilityArrays(y):
+    prob = []
+    #       Klasse, Schmetterling, Hase, Schaf, Küken
+    prob = np.array([
+            [0,     0,      0,      0,      0],      # 75  - 79
+            [1,     0.208,  0,      0,      0],      # 80  - 84
+            [2,     0.078,  0,      0,      0],      # 85  - 89
+            [3,     0.286,  0,      0,      0],      # 90  - 94
+            [4,     0.065,  0,      0,      0],      # 95  - 99
+            [5,     0,      0,      0,      0],      # 100 - 104
+            [6,     0,      0,      0,      0],      # 105 - 109
+            [7,     0.065,  0,      0,      0.273],  # 110 - 114
+            [8,     0.078,   0,      0,      0.156],  # 115 - 119
+            [9,     0.117,  0.182,  0,      0.026],  # 120 - 124
+            [10,    0.026,  0.818,  0,      0.182],  # 125 - 129
+            [11,    0,      0,      0,      0.234],  # 130 - 134
+            [12,    0,      0,      0,      0.130],  # 135 - 139
+            [13,    0,      0,      0,      0],      # 140 - 144
+            [14,    0,      0,      0.333,  0],      # 145 - 149
+            [15,    0,      0,      0.257,  0],      # 150 - 154
+            [16,    0,      0,      0.318,  0],      # 155 - 159
+            [17,    0,      0,      0.091,  0],      # 160 - 164
+            [18,    0.143,  0,      0,      0],      # 165 - 169
+
+    return prob[farbey2Class(y), :]
+
+
+# Function to calculate the given Class from the Height
+def farbey2Class(y):
+    c = math.floor(((y - 75) / 5))
+    if c > 18:
+        c = 18
+    elif c < 0:
+        c = 0
+
+    return c
+
+
+# Calculate the Probability for all Classes on one Height-Class
+def calcProb(prob, klasse):
+    return ((prob[klasse]) / 4) / ((prob[1] + prob[2] + prob[3] + prob[4]) / 4)
+
+
+# Give Back an Vector with probabilitys of each Teached Class
+def probabilityMatrix(classprob):
+    v = []
+    for i in range(4):
+        v.append(calcProb(classprob, i + 1))
+    return v
+
+
+def thisIsWhereTheMagicHappens(y):
+    classprob = loadProbabilityArrays(y)
+    farbeyprob = probabilityMatrix(classprob)
+
+    print(farbeyprob)
+    
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+    
+        
+def loadProbabilityArrays(z):
+    prob = []
+    #       Klasse, Schmetterling, Hase, Schaf, Küken
+    prob = np.array([
+            [0,     0,      0,      0,      0],      # 75  - 79
+            [1,     0,      0,      0,      0],      # 80  - 84
+            [2,     0,      0,      0,      0],      # 85  - 89
+            [3,     0,      0,      0,      0],      # 90  - 94
+            [4,     0,      0,      0,      0.013],  # 95  - 99
+            [5,     0,      0,      0,      0.078],  # 100 - 104
+            [6,     0,      0,      0,      0.182],  # 105 - 109
+            [7,     0.091,  0,      0,      0.195],  # 110 - 114
+            [8,     0.052,  0,      0,      0.078],  # 115 - 119
+            [9,     0.506,  0.182,  0,      0.130],  # 120 - 124
+            [10,    0.156,  0.818,  0,      0.221],  # 125 - 129
+            [11,    0.052,  0.523,  0,      0.104],  # 130 - 134
+            [12,    0.143,  0.477,  0.030,  0],      # 135 - 139
+            [13,    0,      0,      0.136   0],      # 140 - 144
+            [14,    0,      0,      0.166,  0],      # 145 - 149
+            [15,    0,      0,      0.257,  0],      # 150 - 154
+            [16,    0,      0,      0.409,  0],      # 155 - 159
+
+    return prob[farbez2Class(z), :]
+
+
+# Function to calculate the given Class from the Height
+def farbez2Class(z):
+    c = math.floor(((z- 75) / 5))
+    if c > 16:
+        c = 16
+    elif c < 0:
+        c = 0
+
+    return c
+
+
+# Calculate the Probability for all Classes on one Height-Class
+def calcProb(prob, klasse):
+    return ((prob[klasse]) / 4) / ((prob[1] + prob[2] + prob[3] + prob[4]) / 4)
+
+
+# Give Back an Vector with probabilitys of each Teached Class
+def probabilityMatrix(classprob):
+    v = []
+    for i in range(4):
+        v.append(calcProb(classprob, i + 1))
+    return v
+
+
+def thisIsWhereTheMagicHappens(z):
+    classprob = loadProbabilityArrays(z)
+    farbezprob = probabilityMatrix(classprob)
+
+    print(farbezprob)
+    
+    
+    totalprob = farbezprob +farbeyprob + farbexprob + wideprob + heightprob
+    
+#Ende#########################################################################
+
+
 
 
 if __name__ == "__main__":
