@@ -251,17 +251,15 @@ if __name__ == "__main__":
                         2, cv2.LINE_AA)
 
             cv2.imwrite("_Data/Puit/{}.jpg".format(fnames[cnt][6:10]), frame)
-            cv2.imwrite("_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges)
+#            cv2.imwrite("_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges)
 
             if (cv2.waitKey(20) & 0xFF) == ord("q"):
                 break
 
+            cnt = cnt + 1
             if (not do_live) and cnt >= len(fnames):
                 break
 
-            cnt = cnt + 1
-            if cnt > 11:
-                break
 
         else:  # Falls Bild ungültig, Kamera nicht bereit oÄ
             print("Could not retrieve any Picture... Sad...")
