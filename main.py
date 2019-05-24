@@ -12,8 +12,8 @@ import math
 
 use_tilted_rect = True
 
-do_live = False  # Schalter zwischen LiveKamera und Übungsbildern
-# do_live = True
+#do_live = False  # Schalter zwischen LiveKamera und Übungsbildern
+do_live = True
 
 
 def detect(frame):
@@ -67,7 +67,7 @@ def detect(frame):
                      rng.randint(0, 256),
                      rng.randint(0, 256))
 
-        print('{:d},{:d},{:d}'.format(b, g, r))
+        print('Color: {:d},{:d},{:d}'.format(b, g, r))
         cv2.drawContours(frame, hull_list, i, color)
 
         if len(contours) > 0:
@@ -95,7 +95,7 @@ def detect(frame):
                             (int(155), int(155), int(155)),
                             2, cv2.LINE_AA)
 
-                print('{:f},{:f}'.format(w, h))
+                print('Width, Heigth: {:f},{:f}'.format(w, h))
 
             else:
                 # Zeichne das BoundingRect des Objekts in das Video-Bild ein:
@@ -105,8 +105,6 @@ def detect(frame):
                 cv2.putText(frame, "Width: {}, \n Height: {}".format(w, h),
                             (10, 20), font, 0.5, (int(155), int(155),
                             int(155)), 2, cv2.LINE_AA)
-
-    cv2.imshow("Original", frame)
 
     feat.append(w)
     feat.append(h)
@@ -246,6 +244,10 @@ def loadProbabilityArrays(w, h, b, g, r,):
     ret.append(prob[3][green2Class(g), :])
     ret.append(prob[4][red2Class(r), :])
 
+    print ("SHAIT")
+    print(ret)
+    print("TIAHS")
+
     return ret
 
 
@@ -292,8 +294,8 @@ def green2Class(g):
 # Function to calculate the given Class from the Red
 def red2Class(r):
     c = math.floor(((r - 75) / 5))
-    if c > 18:
-        c = 18
+    if c > 16:
+        c = 16
     elif c < 0:
         c = 0
     return c
@@ -301,23 +303,50 @@ def red2Class(r):
 
 # Calculate the Probability for all Classes on one Height-Class
 def calcProb(prob, klasse):
-    return ((prob[klasse]) / 4) / ((prob[1] + prob[2] + prob[3] + prob[4]) / 4)
+    print(((prob[klasse]) / (prob[1] + prob[2] + prob[3] + prob[4])))
+    return ((((prob[klasse]) / (prob[1] + prob[2] + prob[3] + prob[4]))))
 
 
 # Give Back an Vector with probabilitys of each Teached Class
 def probabilityMatrix(classprob):
     v = []
-    for i in range(4):
-        v.append(calcProb(classprob, i + 1))
+    for i in range(len(classprob)-1):
+        v.append(calcProb(classprob, i))
     return v
 
 
 # No Really... This is really where the magic happens
-def thisIsWhereTheMagicHappens(h, w, b, g, r):
+def thisIsWhereTheMagicHappens(feat):
+    
+    klasse = "Unknown"
+    
+    w = feat[0]
+    h = feat[1]
+    b = feat[2][0]
+    g = feat[2][1]
+    r = feat[2][2]
+    cl = ["Kueken", "Hase", "Schaf", "Schmetterling"]
+    
+    print("SVENN: {},{},{},{},{}".format(w,h,b,g,r))
+    
     classprob = loadProbabilityArrays(h, w, b, g, r)
-    heightprob = probabilityMatrix(classprob)
-
-    print(heightprob)
+    prob = probabilityMatrix(classprob)
+      
+    summe = []
+  
+    for i in range(len(prob)):
+        summe.append(sum(prob[i]))
+    
+    print("Class")
+    print(classprob)
+    print("PROB")
+    print(prob)
+    print("SUMME")
+    print(summe)
+    
+    klasse = cl[summe.index(max(summe))]
+    
+    return klasse
 
 
 def rmseClassifier(feat):
@@ -338,8 +367,6 @@ def rmseClassifier(feat):
     h = feat[1]
     c = sum(map(float, filter(None, feat[2][1:])))/(len(feat[2])-1)
     
-    print(c)
-
     rmse.append(math.sqrt((1 / n) * (pow((yK[0] - w), 2) + pow((yK[1] - h), 2) + pow((yK[2] - c), 2))))
     rmse.append(math.sqrt((1 / n) * (pow((yH[0] - w), 2) + pow((yH[1] - h), 2) + pow((yH[2] - c), 2))))
     rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w), 2) + pow((yS[1] - h), 2) + pow((yS[2] - c), 2))))
@@ -347,9 +374,6 @@ def rmseClassifier(feat):
 
     klasse = cl[rmse.index(min(rmse))]
 
-    print(rmse)
-
-    print(klasse)
     return klasse
 
 
@@ -379,7 +403,9 @@ if __name__ == "__main__":
 
             rmseklasse = rmseClassifier(feat)
             
-            bayesklasse = "unknown"
+            bayesklasse = thisIsWhereTheMagicHappens(feat)
+            
+            print("RMSE: {}, Bayess: {}".format(rmseklasse, bayesklasse))
 
             cv2.putText(frame, "RMSE: {}".format(rmseklasse),
                         (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
@@ -391,9 +417,11 @@ if __name__ == "__main__":
                         (int(155), int(155), int(155)),
                         2, cv2.LINE_AA)
 
+            cv2.imshow("Original", frame)
 
-            cv2.imwrite("_Data/Puit/{}.jpg".format(fnames[cnt][6:10]), frame)
-#            cv2.imwrite("_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges)
+            if (not do_live):
+                cv2.imwrite("_Data/Puit/{}.jpg".format(fnames[cnt][6:10]), frame)
+#               cv2.imwrite("_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges)
 
             if (cv2.waitKey(20) & 0xFF) == ord("q"):
                 break
