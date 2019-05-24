@@ -12,13 +12,13 @@ import math
 
 use_tilted_rect = True
 
-do_live = False # Schalter zwischen LiveKamera und Übungsbildern
-#do_live = True
+do_live = False  # Schalter zwischen LiveKamera und Übungsbildern
+# do_live = True
 
 
 def detect(frame):
-    
-    feat = [] # Feature Array
+
+    feat = []  # Feature Array
 
     font = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -26,7 +26,7 @@ def detect(frame):
 
     # Nutze Canny Filter zum detektieren von Kanten
     edges = cv2.Canny(frame, 100, 255)
-    
+
     cv2.imshow("Canny", edges)
 
     # finde Konturen
@@ -51,7 +51,7 @@ def detect(frame):
         mask = edges
 
         cv2.drawContours(mask, hull_all, -1, (255, 255, 255), -1)
-        #cv2.imshow("Mask", mask)
+        # cv2.imshow("Mask", mask)
 
         b, g, r, _ = np.uint8(cv2.mean(frame, mask))
 
@@ -107,11 +107,11 @@ def detect(frame):
                             int(155)), 2, cv2.LINE_AA)
 
     cv2.imshow("Original", frame)
-    
+
     feat.append(w)
     feat.append(h)
     feat.append(color)
-    
+
     return frame, edges, feat
 
 
@@ -187,35 +187,37 @@ def thisIsWhereTheMagicHappens(h):
     heightprob = probabilityMatrix(classprob)
 
     print(heightprob)
-    
+
+
 def rmseClassifier(feat):
 
     klasse = "Unknown"
     rmse = []
-    
-    ## Mittelwerte Breite Höhe Farbe
-    yK = [393.568, 226.339, 3] # Küken
-    yH = [269.751, 215.735, 3]  # Hasen
-    yS = [339.887, 237.996, 3]  # Schafe
-    yP = [318.529, 239.186, 3]  # Schmetterlinge
+
+    # Mittelwerte Breite Höhe Farbe
+    yK = [393.568, 226.339, 114.51]  # Küken
+    yH = [269.751, 215.735, 126.42]  # Hasen
+    yS = [339.887, 237.996, 149.33]  # Schafe
+    yP = [318.529, 239.186, 111.40]  # Schmetterlinge
     cl = ["Küken", "Hase", "Schaf", "Schmetterling"]
-    
+
     n = len(yK)  # Anzahl Merkmale
-        
+
     w = feat[0]
     h = feat[1]
     c = sum(map(float, filter(None, feat[2][1:])))/(len(feat[2])-1)
-    
-    rmse.append(math.sqrt((1 / n) * (pow((yK[0] - w),2) + pow((yK[1] - h),2) + pow((yK[2] - c),2))))
-    rmse.append(math.sqrt((1 / n) * (pow((yH[0] - w),2) + pow((yH[1] - h),2) + pow((yH[2] - c),2))))
-    rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w),2) + pow((yS[1] - h),2) + pow((yS[2] - c),2))))
-    rmse.append(math.sqrt((1 / n) * (pow((yP[0] - w),2) + pow((yP[1] - h),2) + pow((yP[2] - c),2))))
-        
+
+    rmse.append(math.sqrt((1 / n) * (pow((yK[0] - w), 2) + pow((yK[1] - h), 2) + pow((yK[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yH[0] - w), 2) + pow((yH[1] - h), 2) + pow((yH[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w), 2) + pow((yS[1] - h), 2) + pow((yS[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yP[0] - w), 2) + pow((yP[1] - h), 2) + pow((yP[2] - c), 2))))
+
     klasse = cl[rmse.index(min(rmse))]
-    
+
+    print(rmse)
+
     print(klasse)
     return klasse
-
 
 
 if __name__ == "__main__":
@@ -239,18 +241,17 @@ if __name__ == "__main__":
             frame = cv2.imread(fnames[cnt])
 
         if ret:  # Falls gültiges Bild gelesen
-            
             frame, edges, feat = detect(frame)
-            
+
             rmseklasse = rmseClassifier(feat)
-            
+
             cv2.putText(frame, "RMSE: {}".format(rmseklasse),
-                (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
-                (int(155), int(155), int(155)),
-                2, cv2.LINE_AA)
+                        (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                        (int(155), int(155), int(155)),
+                        2, cv2.LINE_AA)
 
             cv2.imwrite("_Data/Puit/{}.jpg".format(fnames[cnt][6:10]), frame)
-#            cv2.imwrite("_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges)
+            cv2.imwrite("_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges)
 
             if (cv2.waitKey(20) & 0xFF) == ord("q"):
                 break
@@ -269,7 +270,7 @@ if __name__ == "__main__":
     # Release Handle on CAP and destroy all Windows
     if do_live:
         cap.release()
-    
+
     cv2.destroyAllWindows()
     cv2.waitKey(10)
     print("Bye Bye")
