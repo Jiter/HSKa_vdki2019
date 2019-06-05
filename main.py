@@ -67,6 +67,8 @@ def detect(frame):
             color = (rng.randint(0, 256),
                      rng.randint(0, 256),
                      rng.randint(0, 256))
+        
+        
 
         print('Color: {:d},{:d},{:d}'.format(b, g, r))
         cv2.drawContours(frame, hull_list, i, color)
@@ -308,16 +310,19 @@ def calcProb(prob):
     print("THIS")
     print(prob)
     for i in range(4):
-        print(i)
-        print(((prob[i+1]) / (prob[1] + prob[2] + prob[3] + prob[4])))
-        ret.append((prob[i+1]) / (prob[1] + prob[2] + prob[3] + prob[4]))
-    
+        su = ((prob[1] + prob[2] + prob[3] + prob[4]))
+        print(su)
+        if (su == 0):
+            ret.append(0)
+        else:
+            ret.append((prob[i+1]) / (prob[1] + prob[2] + prob[3] + prob[4]))
+            
     return ret
 
 # Give Back an Vector with probabilitys of each Teached Class
 def probabilityMatrix(classprob):
     ret = []
-    for i in range(len(classprob)):
+    for i in range(1,len(classprob)):
         ret.append(calcProb(classprob[i]))
         
     print(ret)
@@ -362,7 +367,7 @@ def thisIsWhereTheMagicHappens(feat):
     print("SUMME")
     print(summe)
     
-#    klasse = cl[summe.index(max(summe))]
+    klasse = cl[summe.index(max(summe))]
     
     return klasse
 
@@ -384,11 +389,11 @@ def rmseClassifier(feat):
     w = feat[0]
     h = feat[1]
     c = sum(map(float, filter(None, feat[2][1:])))/(len(feat[2])-1)
-    
-    rmse.append(math.sqrt((1 / n) * (pow((yK[0] - w), 2) + pow((yK[1] - h), 2) + pow((yK[2] - c), 2))))
-    rmse.append(math.sqrt((1 / n) * (pow((yH[0] - w), 2) + pow((yH[1] - h), 2) + pow((yH[2] - c), 2))))
-    rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w), 2) + pow((yS[1] - h), 2) + pow((yS[2] - c), 2))))
-    rmse.append(math.sqrt((1 / n) * (pow((yP[0] - w), 2) + pow((yP[1] - h), 2) + pow((yP[2] - c), 2))))
+
+    rmse.append(math.sqrt((1 / n) * (pow((yK[0] - w), 2) + pow((yK[1] - h), 2) + 0*pow((yK[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yH[0] - w), 2) + pow((yH[1] - h), 2) + 0*pow((yH[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w), 2) + pow((yS[1] - h), 2) + 0*pow((yS[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yP[0] - w), 2) + pow((yP[1] - h), 2) + 0*pow((yP[2] - c), 2))))
 
     klasse = cl[rmse.index(min(rmse))]
 
