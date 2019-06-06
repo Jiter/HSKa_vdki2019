@@ -19,6 +19,11 @@ do_live = True
 
 def detect(frame):
 
+    w = 0
+    h = 0
+    color = (rng.randint(0, 256),
+             rng.randint(0, 256),
+             rng.randint(0, 256))
     feat = []  # Feature Array
 
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -37,10 +42,6 @@ def detect(frame):
     for i in range(len(contours)):
         hull = cv2.convexHull(contours[i])  # konvexe Hülle aller Konturen
         hull_list.append(hull)
-
-    # if ():
-    cont = np.vstack(contours[i] for i in range(len(contours)))
-    hull_all = []
 
     # print("contours:{}".format(contours))
     if (not contours == []):
@@ -247,10 +248,6 @@ def loadProbabilityArrays(w, h, b, g, r,):
     ret.append(prob[3][green2Class(g), :])
     ret.append(prob[4][red2Class(r), :])
 
-    print ("SHAIT")
-    print(ret)
-    print("TIAHS")
-
     return ret
 
 
@@ -307,11 +304,8 @@ def red2Class(r):
 # Calculate the Probability for all Classes on one Height-Class
 def calcProb(prob):
     ret = []
-    print("THIS")
-    print(prob)
     for i in range(4):
         su = ((prob[1] + prob[2] + prob[3] + prob[4]))
-        print(su)
         if (su == 0):
             ret.append(0)
         else:
@@ -325,7 +319,6 @@ def probabilityMatrix(classprob):
     for i in range(1,len(classprob)):
         ret.append(calcProb(classprob[i]))
         
-    print(ret)
     return ret
 
 
@@ -341,31 +334,16 @@ def thisIsWhereTheMagicHappens(feat):
     r = feat[2][2]
     cl = ["Kueken", "Hase", "Schaf", "Schmetterling"]
     
-    print("SVENN: {},{},{},{},{}".format(w, h, b, g, r))
-    
     classprob = loadProbabilityArrays(h, w, b, g, r)
     prob = probabilityMatrix(classprob)
       
     summe = []
     
     for i in range(len(prob[1])):
-        s=0
-        print("i")
+        s = 0
         for j in range(len(prob)):
             s = prob[j][i] + s
-            print("j")
-            print(s)
         summe.append(s)
-        
-    print(summe)
-        
-
-    print("Class")
-    print(classprob)
-    print("PROB")
-    print(prob)
-    print("SUMME")
-    print(summe)
     
     klasse = cl[summe.index(max(summe))]
     
