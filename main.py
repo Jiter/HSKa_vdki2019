@@ -56,8 +56,12 @@ def detect(frame):
         # cv2.imshow("Mask", mask)
 
         b, g, r, _ = np.uint8(cv2.mean(frame, mask))
-
-        cv2.putText(frame, "Color: {},{},{}".format(b, g, r),
+        
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        
+        h, s, v, _ = np.uint8(cv2.mean(hsv, mask))
+ 
+        cv2.putText(frame, "Mean Color of Object: RGB: {},{},{} HSV: {},{},{}".format(r, g, b, h, s, v),
                     (10, 40), font, 0.5,
                     (int(b), int(g), int(r)),
                     2, cv2.LINE_AA)
@@ -71,7 +75,8 @@ def detect(frame):
         
         
 
-        print('Color: {:d},{:d},{:d}'.format(b, g, r))
+#        print('Color: {:d},{:d},{:d}'.format(b, g, r))
+        print ('{},{},{}'.format(h,s,v))   
         cv2.drawContours(frame, hull_list, i, color)
 
         if len(contours) > 0:
@@ -99,7 +104,7 @@ def detect(frame):
                             (int(155), int(155), int(155)),
                             2, cv2.LINE_AA)
 
-                print('Width, Heigth: {:f},{:f}'.format(w, h))
+  #              print('Width, Heigth: {:f},{:f}'.format(w, h))
 
             else:
                 # Zeichne das BoundingRect des Objekts in das Video-Bild ein:
@@ -368,10 +373,10 @@ def rmseClassifier(feat):
     h = feat[1]
     c = sum(map(float, filter(None, feat[2][1:])))/(len(feat[2])-1)
 
-    rmse.append(math.sqrt((1 / n) * (pow((yK[0] - w), 2) + pow((yK[1] - h), 2) + 0*pow((yK[2] - c), 2))))
-    rmse.append(math.sqrt((1 / n) * (pow((yH[0] - w), 2) + pow((yH[1] - h), 2) + 0*pow((yH[2] - c), 2))))
-    rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w), 2) + pow((yS[1] - h), 2) + 0*pow((yS[2] - c), 2))))
-    rmse.append(math.sqrt((1 / n) * (pow((yP[0] - w), 2) + pow((yP[1] - h), 2) + 0*pow((yP[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yK[0] - w), 2) + pow((yK[1] - h), 2) + 1 * pow((yK[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yH[0] - w), 2) + pow((yH[1] - h), 2) + 1 * pow((yH[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w), 2) + pow((yS[1] - h), 2) + 1 * pow((yS[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yP[0] - w), 2) + pow((yP[1] - h), 2) + 1 * pow((yP[2] - c), 2))))
 
     klasse = cl[rmse.index(min(rmse))]
 
@@ -406,7 +411,7 @@ if __name__ == "__main__":
             
             bayesklasse = thisIsWhereTheMagicHappens(feat)
             
-            print("RMSE: {}, Bayess: {}".format(rmseklasse, bayesklasse))
+#            print("RMSE: {}, Bayess: {}".format(rmseklasse, bayesklasse))
 
             cv2.putText(frame, "RMSE: {}".format(rmseklasse),
                         (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
@@ -430,7 +435,9 @@ if __name__ == "__main__":
             cnt = cnt + 1
             if (not do_live) and cnt >= len(fnames):
                 break
-
+            
+            if (do_live) and cnt >= 10:
+                break
 
         else:  # Falls Bild ungültig, Kamera nicht bereit oÄ
             print("Could not retrieve any Picture... Sad...")
