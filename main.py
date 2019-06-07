@@ -9,6 +9,7 @@ import cv2
 import random as rng
 import glob
 import math
+import pdb
 
 use_tilted_rect = True
 
@@ -18,6 +19,11 @@ do_live = True
 
 def detect(frame):
 
+    w = 0
+    h = 0
+    color = (rng.randint(0, 256),
+             rng.randint(0, 256),
+             rng.randint(0, 256))
     feat = []  # Feature Array
 
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -36,10 +42,6 @@ def detect(frame):
     for i in range(len(contours)):
         hull = cv2.convexHull(contours[i])  # konvexe Hülle aller Konturen
         hull_list.append(hull)
-
-    # if ():
-    cont = np.vstack(contours[i] for i in range(len(contours)))
-    hull_all = []
 
     # print("contours:{}".format(contours))
     if (not contours == []):
@@ -66,6 +68,8 @@ def detect(frame):
             color = (rng.randint(0, 256),
                      rng.randint(0, 256),
                      rng.randint(0, 256))
+        
+        
 
         print('Color: {:d},{:d},{:d}'.format(b, g, r))
         cv2.drawContours(frame, hull_list, i, color)
@@ -241,10 +245,6 @@ def loadProbabilityArrays(w, h, b, g, r,):
     ret.append(prob[3][green2Class(g), :])
     ret.append(prob[4][red2Class(r), :])
 
-    print ("SHAIT")
-    print(ret)
-    print("TIAHS")
-
     return ret
 
 
@@ -299,19 +299,24 @@ def red2Class(r):
 
 
 # Calculate the Probability for all Classes on one Height-Class
-def calcProb(prob, klasse):
-    print("calcProb")
-    return ((((prob[klasse]) / (prob[1] + prob[2] + prob[3] + prob[4]))))
-
+def calcProb(prob):
+    ret = []
+    for i in range(4):
+        su = ((prob[1] + prob[2] + prob[3] + prob[4]))
+        if (su == 0):
+            ret.append(0)
+        else:
+            ret.append((prob[i+1]) / (prob[1] + prob[2] + prob[3] + prob[4]))
+            
+    return ret
 
 # Give Back an Vector with probabilitys of each Teached Class
 def probabilityMatrix(classprob):
-    v = []
-    for i in range(len(classprob)-1):
-        v.append(calcProb(classprob[i], i))
-    print ("v")
-    print (v)
-    return v
+    ret = []
+    for i in range(1,len(classprob)):
+        ret.append(calcProb(classprob[i]))
+        
+    return ret
 
 
 # No Really... This is really where the magic happens
@@ -326,22 +331,16 @@ def thisIsWhereTheMagicHappens(feat):
     r = feat[2][2]
     cl = ["Kueken", "Hase", "Schaf", "Schmetterling"]
     
-    print("SVENN: {},{},{},{},{}".format(w,h,b,g,r))
-    
     classprob = loadProbabilityArrays(h, w, b, g, r)
     prob = probabilityMatrix(classprob)
       
     summe = []
-  
-    for i in range(len(prob)):
-        summe.append(sum(prob))
     
-    print("Class")
-    print(classprob)
-    print("PROB")
-    print(prob)
-    print("SUMME")
-    print(summe)
+    for i in range(len(prob[1])):
+        s = 0
+        for j in range(len(prob)):
+            s = prob[j][i] + s
+        summe.append(s)
     
     klasse = cl[summe.index(max(summe))]
     
@@ -365,11 +364,11 @@ def rmseClassifier(feat):
     w = feat[0]
     h = feat[1]
     c = sum(map(float, filter(None, feat[2][1:])))/(len(feat[2])-1)
-    
-    rmse.append(math.sqrt((1 / n) * (pow((yK[0] - w), 2) + pow((yK[1] - h), 2) + pow((yK[2] - c), 2))))
-    rmse.append(math.sqrt((1 / n) * (pow((yH[0] - w), 2) + pow((yH[1] - h), 2) + pow((yH[2] - c), 2))))
-    rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w), 2) + pow((yS[1] - h), 2) + pow((yS[2] - c), 2))))
-    rmse.append(math.sqrt((1 / n) * (pow((yP[0] - w), 2) + pow((yP[1] - h), 2) + pow((yP[2] - c), 2))))
+
+    rmse.append(math.sqrt((1 / n) * (pow((yK[0] - w), 2) + pow((yK[1] - h), 2) + 0*pow((yK[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yH[0] - w), 2) + pow((yH[1] - h), 2) + 0*pow((yH[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w), 2) + pow((yS[1] - h), 2) + 0*pow((yS[2] - c), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yP[0] - w), 2) + pow((yP[1] - h), 2) + 0*pow((yP[2] - c), 2))))
 
     klasse = cl[rmse.index(min(rmse))]
 
