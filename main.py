@@ -431,8 +431,9 @@ if __name__ == "__main__":
             cnt = cnt + 1
             if (not do_live) and cnt >= len(fnames):
                 break
-            
-            if (do_live) and cnt >= 10:
+            if (cnt == 20):
+                print("-------")
+            if (do_live) and cnt >= 31:
                 break
 
         else:  # Falls Bild ungültig, Kamera nicht bereit oÄ
