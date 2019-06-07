@@ -20,6 +20,8 @@ def detect(frame):
 
     w = 0
     h = 0
+    bgr = []
+    hsv = []
     color = (rng.randint(0, 256),
              rng.randint(0, 256),
              rng.randint(0, 256))
@@ -27,7 +29,7 @@ def detect(frame):
 
     font = cv2.FONT_HERSHEY_SIMPLEX
 
-    frame = cv2.blur(frame, (3, 3))
+    frame = cv2.blur(frame, (1, 1))
 
     # Nutze Canny Filter zum detektieren von Kanten
     edges = cv2.Canny(frame, 100, 255)
@@ -357,9 +359,9 @@ def rmseClassifier(feat):
 
     # Mittelwerte Breite Höhe Farbe
     yK = [393.568, 220.339, 114.51]  # Küken
-    yH = [269.751, 215.735, 126.42]  # Hasen
+    yH = [305.751, 230.735, 117.42]  # Hasen
     yS = [339.887, 237.996, 149.33]  # Schafe
-    yP = [318.529, 239.186, 111.40]  # Schmetterlinge
+    yP = [327.529, 245.186, 121.40]  # Schmetterlinge
     cl = ["Kueken", "Hase", "Schaf", "Schmetterling"]
 
     n = len(yK)  # Anzahl Merkmale
@@ -373,6 +375,8 @@ def rmseClassifier(feat):
     rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w), 2) + pow((yS[1] - h), 2) + pow((yS[2] - c), 2))))
     rmse.append(math.sqrt((1 / n) * (pow((yP[0] - w), 2) + pow((yP[1] - h), 2) + pow((yP[2] - c), 2))))
 
+    print(rmse)
+
     klasse = cl[rmse.index(min(rmse))]
 
     return klasse
@@ -382,22 +386,35 @@ def TreeClassifier(feat):
     
     w = feat[0]
     h = feat[1]
-    c = sum(map(float, filter(None, feat[2][1:])))/(len(feat[2])-1)
-
+    hue = feat[3][0]
+    sat = feat[3][1]
     
     if ((w > 365) & (w < 420)):
         if ((h > 212) & (h < 238)):
-            return "Kueken"
+            if ((hue > 40) & (hue < 60) & (sat > 120) & (sat < 160)): 
+                return "Kueken"
+            else:
+                return "Stoerobjekt"
     elif (((h * w) > 60000) & ((h * w) < 75000)):
-        return "Hase"
+        if ((hue > 15) & (hue < 38) & (sat > 107) & (sat < 150)): 
+            return "Hase"
+        else:
+            return "Stoerobjekt"
     elif (not((h > 220) & (h < 260))):
         return "Stoerobjekt"
     elif (not((w > 280) & (w < 370))):
         return "Stoerobjekt"
-    elif (not True): # SET COLOR HERE FOR SCHAAAAF
+    elif ((hue > 50) & (hue < 70) & (sat > 50) & (sat < 70)):
         return "Schaf"
     else:
-        return "Schmetterling"
+        if ((hue > 45) & (hue < 75) & (sat > 78) & (sat < 115)): 
+            return "Schmetterbling" #grün
+        elif ((hue > 110) & (hue < 160) & (sat > 110) & (sat < 135)):
+            return "Schmetterling" #rot
+        elif ((hue > 15) & (hue < 40) & (sat > 135) & (sat < 170)):
+            return "Schmetterling" #gäl
+        else:
+            return "Stoerobjekt"
         
     return "ERROR in Class"
 
