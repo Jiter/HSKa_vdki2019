@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jun 20 07:47:45 2019
+
+@author: david
+"""
+startzahl = 12
+
+for i in range(66,125,2):
+
+    print("[{},     0,      0,      0,      0],     # {} - {}".format(startzahl,i, i+1)) 
+    startzahl = startzahl + 1;
