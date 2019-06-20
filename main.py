@@ -128,43 +128,43 @@ def loadProbabilityArrays(w, h, ch, s):
     # WIDTH
     #       Klasse, Schmetterling, Hase, Schaf, Küken
     prob.append(np.array([
-            [0,     0,      0.591,  0,      0],      # 210 - 215
-            [1,     0,      0.159,  0,      0.026],  # 215 - 220
-            [2,     0,      0.159,  0,      0.299],  # 220 - 225
-            [3,     0.240,  0,      0.106,  0.597],  # 225 - 230
-            [4,     0.2,    0,      0.227,  0.078],  # 230 - 235
-            [5,     0.053,  0,      0.197,  0],      # 235 - 240
-            [6,     0,      0,      0.469,  0],      # 240 - 245
-            [7,     0.253,  0,      0,      0],      # 245 - 250
-            [8,     0.16,   0,      0,      0],      # 250 - 255
+            [0,     0,      0.023,  0,      0],      # 210 - 215
+            [1,     0,      0.045,  0,      0],  # 215 - 220
+            [2,     0,      0.772,  0,      0.5],  # 220 - 225
+            [3,     0,      0.159,  0,      0.469],  # 225 - 230
+            [4,     0,      0,      0.561,  0.030],  # 230 - 235
+            [5,     0.143,  0,      0.439,  0],      # 235 - 240
+            [6,     0.364,  0,      0.,     0],      # 240 - 245
+            [7,     0.493,  0,      0,      0],      # 245 - 250
+            [8,     0,      0,      0,      0],      # 250 - 255
             ]))
 
     # HEIGHT
     #       Klasse, Schmetterling, Hase, Schaf, Küken
     prob.append(np.array([
-            [0,     0,      0.16,   0,      0],      # 290 - 295
-            [1,     0,      0.595,  0,      0],      # 295 - 300
-            [2,     0.091,  0.238,  0,      0],      # 300 - 305
-            [3,     0.233,  0,      0,      0],      # 305 - 310
-            [4,     0.195,  0,      0,      0],      # 310 - 315
-            [5,     0.078,  0,      0,      0],      # 315 - 320
-            [6,     0,      0,      0,      0],      # 320 - 325
-            [7,     0.247,  0,      0,      0],      # 325 - 330
-            [8,     0.156,  0,      0.079,  0],      # 330 - 335
-            [9,     0,      0,      0.571,  0],      # 335 - 340
-            [10,    0,      0,      0.19,   0],      # 340 - 345
-            [11,    0,      0,      0.158,  0],      # 345 - 350
+            [0,     0,      0.045,  0,      0],      # 290 - 295
+            [1,     0,      0.613,  0,      0],      # 295 - 300
+            [2,     0,      0.341,  0,      0],      # 300 - 305
+            [3,     0.143,  0,      0,      0],      # 305 - 310
+            [4,     0.005,  0,      0,      0],      # 310 - 315
+            [5,     0.393,  0,      0,      0],      # 315 - 320
+            [6,     0.005,  0,      0.215,  0],      # 320 - 325
+            [7,     0.311,  0,      0.154,  0],      # 325 - 330
+            [8,     0.143,  0,      0.446,  0],      # 330 - 335
+            [9,     0,      0,      0.184,  0],      # 335 - 340
+            [10,    0,      0,      0,      0],      # 340 - 345
+            [11,    0,      0,      0,      0],      # 345 - 350
             [12,    0,      0,      0,      0],      # 350 - 355
             [13,    0,      0,      0,      0],      # 355 - 360
             [14,    0,      0,      0,      0],      # 360 - 365
             [15,    0,      0,      0,      0],      # 365 - 370
             [16,    0,      0,      0,      0],      # 370 - 375
             [17,    0,      0,      0,      0],      # 375 - 380
-            [18,    0,      0,      0,      0.067],  # 380 - 385
-            [19,    0,      0,      0,      0.284],  # 385 - 390
-            [20,    0,      0,      0,      0.243],  # 390 - 395
-            [21,    0,      0,      0,      0.365],  # 395 - 400
-            [22,    0,      0,      0,      0.040],  # 400 - 405
+            [18,    0,      0,      0,      0.242],  # 380 - 385
+            [19,    0,      0,      0,      0.616],  # 385 - 390
+            [20,    0,      0,      0,      0.005],  # 390 - 395
+            [21,    0,      0,      0,      0.091],  # 395 - 400
+            [22,    0,      0,      0,      0.045],  # 400 - 405
             ]))
 
     # H-Value (alt:BLAU)
@@ -328,8 +328,8 @@ def height2Class(h):
 # Function to calculate the given Class from the Blue
 def H2Class(b):
     c = math.floor(((b - 24) / 2))
-    if c > 62:
-        c = 62
+    if c > 61:
+        c = 61
     elif c < 0:
         c = 0
     return c
@@ -338,8 +338,8 @@ def H2Class(b):
 # Function to calculate the given Class from the Saturation
 def S2Class(g):
     c = math.floor(((g - 48) / 2))
-    if c > 55:
-        c = 55
+    if c > 54:
+        c = 54
     elif c < 0:
         c = 0
     return c
@@ -360,7 +360,7 @@ def calcProb(prob):
 # Give Back an Vector with probabilitys of each Teached Class
 def probabilityMatrix(classprob):
     ret = []
-    for i in range(1,len(classprob)):
+    for i in range(0, len(classprob)):
         ret.append(calcProb(classprob[i]))
         
     return ret
@@ -375,7 +375,7 @@ def thisIsWhereTheMagicHappens(feat):
     h = feat[1]
     hc = feat[3][0]
     v = feat[3][1]
-    cl = ["Kueken", "Hase", "Schaf", "Schmetterling"]
+    cl = ["Schmetterling", "Hase", "Schaf", "Kueken"]
     
     classprob = loadProbabilityArrays(h, w, hc, v)
     prob = probabilityMatrix(classprob)
@@ -416,7 +416,44 @@ def rmseClassifier(feat):
     rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w), 2) + pow((yS[1] - h), 2) + pow((yS[2] - c), 2))))
     rmse.append(math.sqrt((1 / n) * (pow((yP[0] - w), 2) + pow((yP[1] - h), 2) + pow((yP[2] - c), 2))))
 
-    print(rmse)
+    print("RMSE RGB: " + str(rmse))
+
+    klasse = cl[rmse.index(min(rmse))]
+
+    return klasse
+
+
+def rmseHSVClassifier(feat):
+
+    klasse = "Unknown"
+    rmse = []
+
+    # Mittelwerte Breite Höhe H , S
+    yK = [377.200, 223.600, 51.091, 141.018]  # Küken
+    yH = [299.200, 222.220, 26.568, 122.545]  # Hasen
+    yS = [330.440, 234.310, 60.863, 59.000]  # Schafe
+    yP1 = [324.070, 244.550, 61.450, 90.720]  # Schmetterlinge
+    yP2 = [324.070, 244.550, 140.000, 116.000]  # Schmetterlinge 
+    yP3 = [324.070, 244.550, 28.000, 150.000]  # Schmetterlinge
+    cl = ["Kueken", "Hase", "Schaf", "Schmetterling", "Schmetterbling", "Schmetterlingling"]
+
+    n = len(yK)  # Anzahl Merkmale
+
+    w = feat[0]
+    h = feat[1]
+    hc = feat[3][0]
+    v = feat[3][1]
+    
+    print(str(hc) + " , " + str(v))
+
+    rmse.append(math.sqrt((1 / n) * (pow((yK[0] - w), 2) + pow((yK[1] - h), 2) + pow((yK[2] - hc), 2) + pow((yK[3] - v), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yH[0] - w), 2) + pow((yH[1] - h), 2) + pow((yH[2] - hc), 2) + pow((yH[3] - v), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w), 2) + pow((yS[1] - h), 2) + pow((yS[2] - hc), 2) + pow((yS[3] - v), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yP1[0] - w), 2) + pow((yP1[1] - h), 2) + pow((yP1[2] - hc), 2) + pow((yP1[3] - v), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yP2[0] - w), 2) + pow((yP2[1] - h), 2) + pow((yP2[2] - hc), 2) + pow((yP2[3] - v), 2))))
+    rmse.append(math.sqrt((1 / n) * (pow((yP3[0] - w), 2) + pow((yP3[1] - h), 2) + pow((yP3[2] - hc), 2) + pow((yP3[3] - v), 2))))
+
+    print("RMSE HSV: " + str(rmse))
 
     klasse = cl[rmse.index(min(rmse))]
 
@@ -435,27 +472,27 @@ def TreeClassifier(feat):
             if ((hue > 40) & (hue < 60) & (sat > 120) & (sat < 160)): 
                 return "Kueken"
             else:
-                return "Stoerobjekt"
+                return "Stoerobjekt1"
     elif (((h * w) > 60000) & ((h * w) < 75000)):
         if ((hue > 15) & (hue < 38) & (sat > 107) & (sat < 150)): 
             return "Hase"
         else:
-            return "Stoerobjekt"
+            return "Stoerobjekt2"
     elif (not((h > 220) & (h < 260))):
-        return "Stoerobjekt"
+        return "Stoerobjekt3"
     elif (not((w > 280) & (w < 370))):
-        return "Stoerobjekt"
-    elif ((hue > 50) & (hue < 70) & (sat > 50) & (sat < 70)):
+        return "Stoerobjekt4"
+    elif ((hue > 50) & (hue < 70) & (sat > 50) & (sat < 75)):
         return "Schaf"
     else:
         if ((hue > 45) & (hue < 75) & (sat > 78) & (sat < 115)): 
             return "Schmetterbling" #grün
-        elif ((hue > 110) & (hue < 160) & (sat > 110) & (sat < 135)):
+        elif ((hue > 90) & (hue < 160) & (sat > 110) & (sat < 135)):
             return "Schmetterling" #rot
         elif ((hue > 15) & (hue < 40) & (sat > 135) & (sat < 170)):
             return "Schmetterling" #gäl
         else:
-            return "Stoerobjekt"
+            return "Stoerobjekt5"
         
     return "ERROR in Class"
 
@@ -467,7 +504,7 @@ if __name__ == "__main__":
     makeWindows()
 
     if do_live:
-        cap = cv2.VideoCapture(0)  # Initialisiere die Kamera
+        cap = cv2.VideoCapture(1)  # Initialisiere die Kamera
     else:
         fnames = glob.glob("_Data/*.jpg")
 
@@ -486,6 +523,7 @@ if __name__ == "__main__":
             frame, edges, feat = detect(frame)
 
             rmseklasse = rmseClassifier(feat)
+            rmsehsvklasse = rmseHSVClassifier(feat)
             
             bayesklasse = thisIsWhereTheMagicHappens(feat)
             
@@ -493,18 +531,23 @@ if __name__ == "__main__":
             
             print("RMSE: {}, Bayess: {}, Tree: {}".format(rmseklasse, bayesklasse, treeklasse))
 
-            cv2.putText(frame, "RMSE: {}".format(rmseklasse),
+            cv2.putText(frame, "RMSE (RGB): {}".format(rmseklasse),
                         (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                         (int(0), int(155), int(0)),
                         2, cv2.LINE_AA)
             
-            cv2.putText(frame, "Bayes: {}".format(bayesklasse),
+            cv2.putText(frame, "RMSE (HSV): {}".format(rmsehsvklasse),
                         (10, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                         (int(0), int(155), int(0)),
                         2, cv2.LINE_AA)
             
-            cv2.putText(frame, "Tree: {}".format(treeklasse),
+            cv2.putText(frame, "Bayes: {}".format(bayesklasse),
                         (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                        (int(0), int(155), int(0)),
+                        2, cv2.LINE_AA)
+            
+            cv2.putText(frame, "Tree: {}".format(treeklasse),
+                        (10, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                         (int(0), int(155), int(0)),
                         2, cv2.LINE_AA)
 
