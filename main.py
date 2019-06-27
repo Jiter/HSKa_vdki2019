@@ -26,7 +26,7 @@ def detect(frame):
 
     font = cv2.FONT_HERSHEY_SIMPLEX
 
-    frame = cv2.blur(frame, (1, 1))
+    frame = cv2.blur(frame, (3, 3))
 
     # Nutze Canny Filter zum detektieren von Kanten
     edges = cv2.Canny(frame, 100, 255)
@@ -416,8 +416,6 @@ def rmseClassifier(feat):
     rmse.append(math.sqrt((1 / n) * (pow((yS[0] - w), 2) + pow((yS[1] - h), 2) + pow((yS[2] - c), 2))))
     rmse.append(math.sqrt((1 / n) * (pow((yP[0] - w), 2) + pow((yP[1] - h), 2) + pow((yP[2] - c), 2))))
 
-    print("RMSE RGB: " + str(rmse))
-
     klasse = cl[rmse.index(min(rmse))]
 
     return klasse
@@ -452,8 +450,6 @@ def rmseHSVClassifier(feat):
     rmse.append(math.sqrt((1 / n) * (pow((yP1[0] - w), 2) + pow((yP1[1] - h), 2) + pow((yP1[2] - hc), 2) + pow((yP1[3] - v), 2))))
     rmse.append(math.sqrt((1 / n) * (pow((yP2[0] - w), 2) + pow((yP2[1] - h), 2) + pow((yP2[2] - hc), 2) + pow((yP2[3] - v), 2))))
     rmse.append(math.sqrt((1 / n) * (pow((yP3[0] - w), 2) + pow((yP3[1] - h), 2) + pow((yP3[2] - hc), 2) + pow((yP3[3] - v), 2))))
-
-    print("RMSE HSV: " + str(rmse))
 
     klasse = cl[rmse.index(min(rmse))]
 
@@ -504,7 +500,7 @@ if __name__ == "__main__":
     makeWindows()
 
     if do_live:
-        cap = cv2.VideoCapture(1)  # Initialisiere die Kamera
+        cap = cv2.VideoCapture(0)  # Initialisiere die Kamera
     else:
         fnames = glob.glob("_Data/*.jpg")
 
@@ -557,6 +553,10 @@ if __name__ == "__main__":
 #               cv2.imwrite("_Data/Puit/{}_canny.jpg".format(fnames[cnt][6:10]), edges)
 
             if (cv2.waitKey(20) & 0xFF) == ord("q"):
+                break
+            
+            if (cv2.waitKey(20) & 0xFF) == ord("p"):
+                cv2.imwrite("_Data/Test/{}.jpg".format(rmseklasse), frame)
                 break
 
             cnt = cnt + 1
