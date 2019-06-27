@@ -555,6 +555,7 @@ if __name__ == "__main__":
             if (cv2.waitKey(20) & 0xFF) == ord("q"):
                 break
             
+            # Take Picture with Classname
             if (cv2.waitKey(20) & 0xFF) == ord("p"):
                 cv2.imwrite("_Data/Test/{}.jpg".format(rmseklasse), frame)
                 break
